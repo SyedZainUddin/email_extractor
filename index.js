@@ -26,7 +26,7 @@ const emailSchema = new mongoose.Schema({
 });
 const Email = mongoose.model("Email", emailSchema);
 
-app.use("/images", (req, res, next) => {
+app.use("/images", async (req, res, next) => {
   const imageName = req.path.split("/").pop();
   const email = req.query.email;
 
@@ -39,7 +39,7 @@ app.use("/images", (req, res, next) => {
   }
 
   console.log(`Email captured: ${email}`);
-  saveEmailToDatabase(email);
+  const saveEmail = await saveEmailToDatabase(email);
   next();
 });
 
