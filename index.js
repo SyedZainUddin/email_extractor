@@ -17,6 +17,8 @@ mongoose
     console.error(err);
   });
 
+mongoose.set("bufferCommands", false);
+
 const emailSchema = new mongoose.Schema({
   email: {
     type: String,
