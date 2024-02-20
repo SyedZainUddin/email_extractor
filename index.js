@@ -49,7 +49,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
-
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 async function saveEmailToDatabase(email) {
   try {
     const newEmail = new Email({ email });
