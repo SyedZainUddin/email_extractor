@@ -17,22 +17,24 @@ mongoose
     console.error(err);
   });
 
- 
-const emailSchema = new mongoose.Schema({
+const clientSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
     unique: true,
   },
+  firstName: String,
+  lastName: String,
+  country: String,
 });
-const Email = mongoose.model("Email", emailSchema);
+const Client = mongoose.model("clients", clientSchema);
 
 app.use("/images", async (req, res, next) => {
   const imageName = req.path.split("/").pop();
-  const email = req.query.email;
+  const { email, firstName, lastName, country } = req.query;
 
-  if (!email) {
-    return res.status(400).send("Missing email parameter");
+  if (!email || !firstName || !lastName || !country) {
+    return res.status(400).send("Missing parameters");
   }
 
   if (!validator.isEmail(email)) {
@@ -40,7 +42,12 @@ app.use("/images", async (req, res, next) => {
   }
 
   console.log(`Email captured: ${email}`);
-  const saveEmail = await saveEmailToDatabase(email);
+  console.log(`First Name: ${firstName}`);
+  console.log(`Last Name: ${lastName}`);
+  console.log(`Country: ${country}`);
+
+  await saveEmailToDatabase({ email, firstName, lastName, country });
+
   next();
 });
 
@@ -55,11 +62,11 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-async function saveEmailToDatabase(email) {
+async function saveEmailToDatabase({ email, firstName, lastName, country }) {
   try {
-    const newEmail = new Email({ email });
-    const savedEmail = await newEmail.save();
-    console.log("Email saved to database:", savedEmail);
+    const newClient = new Client({ email, firstName, lastName, country });
+    const savedClient = await newClient.save();
+    console.log("Email saved to database:", savedClient);
   } catch (error) {
     if (error.name === "ValidationError") {
       console.log("Validation Error:", error.message);
