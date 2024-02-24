@@ -8,37 +8,37 @@ const imagesDirectory = path.join(__dirname, "images");
 const router = express.Router();
 
 router.use("/images", async (req, res, next) => {
-  const imageName = req.path.split("/").pop();
   const { email, firstName, lastName, country } = req.query;
-console.log(email, firstName, lastName, country)
-  if (!email || !firstName || !lastName || !country) {
-    return express.static(imagesDirectory)(req, res, next);
-  }
-
-  if (!validator.isEmail(email)) {
-    return express.static(imagesDirectory)(req, res, next);
-  }
+  console.log(email, firstName, lastName, country);
 
   try {
-    // Check if the email already exists in the database
+    if (!email || !validator.isEmail(email)) {
+      return res.status(400).send("Invalid email format");
+    }
+
     const existingClient = await Client.findOne({ email });
-    if (existingClient) {
-      console.log("Email already exists", existingClient);
-      return express.static(imagesDirectory)(req, res, next);
+
+    if (!existingClient) {
+      const newClientData = { email };
+
+      // Add optional fields if they exist
+      if (firstName) newClientData.firstName = firstName;
+      if (lastName) newClientData.lastName = lastName;
+      if (country) newClientData.country = country;
+
+      const newClient = new Client(newClientData);
+      const savedClient = await newClient.save();
+
+      console.log("Email saved to database:", savedClient);
+    } else {
+      console.log("Email already exists:", existingClient);
     }
 
-    // If the email is unique, save the client
-    const newClient = new Client({ email, firstName, lastName, country });
-    const savedClient = await newClient.save();
-    console.log("Email saved to database:", savedClient);
-
-    express.static(imagesDirectory)(req, res, next);
+    // Return success response with static images
+    return express.static(imagesDirectory)(req, res, next);
   } catch (error) {
-    express.static(imagesDirectory)(req, res, next);
-    if (error) {
-      console.log("Validation Error:", error.message);
-      // Handle other types of errors as needed
-    }
+    // Pass error to global error handler middleware
+    next(error);
   }
 });
 
