@@ -1,4 +1,3 @@
-// apiRoutes.js
 const express = require("express");
 const Client = require("./schema");
 const validator = require("validator");
@@ -11,7 +10,7 @@ const router = express.Router();
 router.use("/images", async (req, res, next) => {
   const imageName = req.path.split("/").pop();
   const { email, firstName, lastName, country } = req.query;
-
+console.log(email, firstName, lastName, country)
   if (!email || !firstName || !lastName || !country) {
     return express.static(imagesDirectory)(req, res, next);
   }
