@@ -42,4 +42,29 @@ router.use("/images", async (req, res, next) => {
   }
 });
 
+router.get("/clients", async (req, res, next) => {
+  try {
+     const clients = await Client.find();
+     res.json(clients);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/emails", async (req, res, next) => {
+  try {
+    // Fetch all clients from the database
+    const clients = await Client.find();
+
+    // Extract email addresses from clients and create an array
+    const emails = clients.map(client => client.email);
+
+    // Return the array of email addresses as JSON response
+    res.json(emails);
+  } catch (error) {
+    // Pass any errors to the global error handler middleware
+    next(error);
+  }
+});
+
 module.exports = router;
