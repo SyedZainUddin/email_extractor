@@ -15,23 +15,25 @@ router.use("/images", async (req, res, next) => {
     // if (!email || !validator.isEmail(email)) {
     //   return res.status(400).send("Invalid email format");
     // }
+    if (email) {
 
-    const existingClient = await Client.findOne({ email });
+      const existingClient = await Client.findOne({ email });
 
-    if (!existingClient) {
-      const newClientData = { email };
+      if (!existingClient) {
+        const newClientData = { email };
 
-      // Add optional fields if they exist
-      // if (firstName) newClientData.firstName = firstName;
-      // if (lastName) newClientData.lastName = lastName;
-      // if (country) newClientData.country = country;
+        // Add optional fields if they exist
+        // if (firstName) newClientData.firstName = firstName;
+        // if (lastName) newClientData.lastName = lastName;
+        // if (country) newClientData.country = country;
 
-      const newClient = new Client(newClientData);
-      const savedClient = await newClient.save();
+        const newClient = new Client(newClientData);
+        const savedClient = await newClient.save();
 
-      console.log("Email saved to database:", savedClient);
-    } else {
-      console.log("Email already exists:", existingClient);
+        console.log("Email saved to database:", savedClient);
+      } else {
+        console.log("Email already exists:", existingClient);
+      }
     }
 
     // Return success response with static images
@@ -44,8 +46,8 @@ router.use("/images", async (req, res, next) => {
 
 router.get("/clients", async (req, res, next) => {
   try {
-     const clients = await Client.find();
-     res.json(clients);
+    const clients = await Client.find();
+    res.json(clients);
   } catch (error) {
     next(error);
   }
