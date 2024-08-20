@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use("/images", async (req, res, next) => {
   const { email, firstName, lastName, country } = req.query;
-  console.log(email, firstName, lastName, country);
+  // console.log(email, firstName, lastName, country);
 
   try {
     if (!email || !validator.isEmail(email)) {
@@ -22,9 +22,9 @@ router.use("/images", async (req, res, next) => {
       const newClientData = { email };
 
       // Add optional fields if they exist
-      if (firstName) newClientData.firstName = firstName;
-      if (lastName) newClientData.lastName = lastName;
-      if (country) newClientData.country = country;
+      // if (firstName) newClientData.firstName = firstName;
+      // if (lastName) newClientData.lastName = lastName;
+      // if (country) newClientData.country = country;
 
       const newClient = new Client(newClientData);
       const savedClient = await newClient.save();
