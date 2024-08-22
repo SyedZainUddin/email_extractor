@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
  const connection = require("./connection");
 const apiRoutes = require("./route");
+app.set('trust proxy', true)
 
 // Force geoip-lite to download its data files
 geoip.startWatchingDataUpdate();
@@ -16,7 +17,9 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  const ip = req.ip
+
+  res.send(`Server is runningIP: ${ip}`);
 });
 
 const PORT = process.env.PORT || 3000;
