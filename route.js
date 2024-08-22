@@ -19,8 +19,12 @@ const IPAPI_URL = 'https://ipapi.co';
 router.use("/images", async (req, res, next) => {
   const { email, firstName, lastName } = req.query;
   // console.log(email, firstName, lastName, country);
-  const ip = req.ip
-  
+  const ip =
+    req.headers['x-forwarded-for'] ||
+    req.headers['x-real-ip'] ||
+    req.headers['cg-connecting-ip'] ||
+    req.socket.remoteAddress
+      
   try {
     // if (!email || !validator.isEmail(email)) {
     //   return res.status(400).send("Invalid email format");
