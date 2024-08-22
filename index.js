@@ -3,8 +3,7 @@ const app = express();
 require("dotenv").config();
 const connection = require("./connection");
 const apiRoutes = require("./route");
-app.set('trust proxy', true)
-
+ 
 const axios = require('axios');
 
 // Replace with your IPAPI access key if you have one
