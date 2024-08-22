@@ -9,27 +9,14 @@ const router = express.Router();
 
 
 
-const axios = require('axios');
 
-// Replace with your IPAPI access key if you have one
-const IPAPI_URL = 'https://ipapi.co';
-
-const getCountryFromIP = async (ip) => {
-  try {
-    const response = await axios.get(`${IPAPI_URL}/${ip}/json/`);
-    return response.data.country_name;
-  } catch (error) {
-    console.error('Error fetching country information:', error);
-    throw new Error('Unable to fetch country information.');
-  }
-};
 
 router.use("/images", async (req, res, next) => {
   const { email, firstName, lastName } = req.query;
   // console.log(email, firstName, lastName, country);
   const ip = req.ip
-  const country = await getCountryFromIP(ip);
-  console.log(country)
+  console.log(ip)
+
   try {
     // if (!email || !validator.isEmail(email)) {
     //   return res.status(400).send("Invalid email format");
