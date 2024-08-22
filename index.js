@@ -3,8 +3,7 @@ const app = express();
 require("dotenv").config();
 const connection = require("./connection");
 const apiRoutes = require("./route");
-app.set('trust proxy', true)
-
+ 
 app.use(apiRoutes);
 
 app.use((err, req, res, next) => {
@@ -14,7 +13,7 @@ app.use((err, req, res, next) => {
 
 app.get("/", (req, res) => {
   const ip = req.ip
-  res.send(`Server is runningIP: ${ip}`);
+  res.send(`Server is running on IP: ${ip}`);
 });
 
 const PORT = process.env.PORT || 3000;
