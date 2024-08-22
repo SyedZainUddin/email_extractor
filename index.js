@@ -1,25 +1,13 @@
+const geoip = require("geoip-lite");
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const connection = require("./connection");
+ const connection = require("./connection");
 const apiRoutes = require("./route");
- 
-const axios = require('axios');
-
-// Replace with your IPAPI access key if you have one
-const IPAPI_URL = 'https://ipapi.co';
-
-const getCountryFromIP = async (ip) => {
-  try {
-    const response = await axios.get(`${IPAPI_URL}/${ip}/json/`);
-    return response.data.country_name;
-  } catch (error) {
-    console.error('Error fetching country information:', error);
-    throw new Error('Unable to fetch country information.');
-  }
-};
+app.set('trust proxy', true)
 
 // Force geoip-lite to download its data files
+geoip.startWatchingDataUpdate();
 
 app.use(apiRoutes);
 
@@ -28,12 +16,10 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server Error");
 });
 
-app.get("/", async (req, res) => {
+app.get("/", (req, res) => {
   const ip = req.ip
-  const country = await getCountryFromIP(ip);
-  console.log(country)
 
-  res.send({ message: `Server is running on IP: ${ip}`, country: country });
+  res.send(`Server is runningIP: ${ip}`);
 });
 
 const PORT = process.env.PORT || 3000;
