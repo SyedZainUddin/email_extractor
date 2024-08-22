@@ -1,8 +1,12 @@
+const geoip = require("geoip-lite");
 const express = require("express");
 const app = express();
 require("dotenv").config();
  const connection = require("./connection");
 const apiRoutes = require("./route");
+
+// Force geoip-lite to download its data files
+geoip.startWatchingDataUpdate();
 
 app.use(apiRoutes);
 
