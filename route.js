@@ -9,14 +9,18 @@ const router = express.Router();
 
 
 
+const axios = require('axios');
+
+// Replace with your IPAPI access key if you have one
+const IPAPI_URL = 'https://ipapi.co';
+
 
 
 router.use("/images", async (req, res, next) => {
   const { email, firstName, lastName } = req.query;
   // console.log(email, firstName, lastName, country);
   const ip = req.ip
-  console.log(ip)
-
+ 
   try {
     // if (!email || !validator.isEmail(email)) {
     //   return res.status(400).send("Invalid email format");
