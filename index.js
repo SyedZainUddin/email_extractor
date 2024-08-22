@@ -13,7 +13,9 @@ app.use((err, req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  const ip = req.ip
+  const ip = req.socket.remoteAddress
+ 
+
   res.send(`Server is runningIP: ${ip}`);
 });
 
