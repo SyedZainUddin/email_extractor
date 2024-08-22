@@ -11,6 +11,7 @@ const clientSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   country: String,
+  ip: String,
 });
 
 module.exports = mongoose.model(process.env.SITE_NAME || "test", clientSchema);
