@@ -17,8 +17,8 @@ const IPAPI_URL = 'https://ipapi.co';
  
 
 router.use("/images", async (req, res, next) => {
-  const { email, firstName, lastName } = req.query;
-  // console.log(email, firstName, lastName, country);
+  const { email, firstName, lastName, country, contect } = req.query;
+  console.log(email, firstName, lastName, country, contect, "body");
   const ip =
     req.headers['x-forwarded-for'] ||
     req.headers['x-real-ip'] ||
@@ -37,14 +37,17 @@ router.use("/images", async (req, res, next) => {
         const newClientData = { email, ip };
 
         // Add optional fields if they exist
-        // if (firstName) newClientData.firstName = firstName;
-        // if (lastName) newClientData.lastName = lastName;
-        // if (country) newClientData.country = country;
+        if (firstName) newClientData.firstName = firstName;
+        if (lastName) newClientData.lastName = lastName;
+        if (country) newClientData.country = country;
+        if (contect) newClientData.contect = contect;
+
 
         const newClient = new Client(newClientData);
+        console.log(newClient, "new client")
         const savedClient = await newClient.save();
 
-        // console.log("Email saved to database:", savedClient);
+        console.log("Email saved to database:", savedClient);
       } else {
         console.log("Email already existss")
       }
